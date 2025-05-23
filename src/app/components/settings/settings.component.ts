@@ -90,10 +90,13 @@ export class SettingsComponent implements OnInit {
     }
   }
   
-  toggleTheme() {
-    const newTheme = this.currentSettings.theme === 'light' ? 'dark' : 'light';
-    this.settingsService.updateSettings({ theme: newTheme });
-    this.currentSettings = this.settingsService.loadSettings();
-    this.settingsForm.patchValue({ theme: this.currentSettings.theme });
+  toggleTheme(): void {
+    const newTheme = this.settingsForm.get('theme')?.value === 'light' ? 'dark' : 'light';
+    this.settingsForm.patchValue({ theme: newTheme });
+    this.settingsService.toggleTheme();
+  }
+  
+  refreshProviders() {
+    this.settingsService.loadProviderInfo();
   }
 }

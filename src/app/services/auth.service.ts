@@ -45,7 +45,7 @@ export class AuthService {
       'Content-Type': 'application/x-www-form-urlencoded'
     });
 
-    return this.http.post<AuthToken>(`${this.baseUrl}/auth/token`, formData.toString(), { headers })
+    return this.http.post<AuthToken>(`${this.baseUrl}/api/auth/token`, formData.toString(), { headers })
       .pipe(
         tap(response => {
           localStorage.setItem(this.tokenKey, response.access_token);

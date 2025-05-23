@@ -94,21 +94,33 @@ export class SettingsService {
   }
 
   loadProviderInfo(): void {
-    console.log('Attempting to load provider info from:', `${this.apiService['baseUrl']}/api/providers`);
+    console.log('Attempting to load provider info from:', `${this.apiService['baseUrl']}/api/models`);
     this.apiService.getProviders().subscribe({
       next: (response: ProviderResponse) => {
         console.log('Provider info loaded successfully:', response);
-        this.providersSubject.next(response.providers);
-        this.defaultProviderSubject.next(response.default_provider);
+        if (response.providers && Array.isArray(response.providers)) {
+          this.providersSubject.next(response.providers);
+        } else {
+          console.warn('No providers found or invalid provider data format');
+          this.providersSubject.next([]);
+        }
         
-        // Set the default provider as the selected provider if none is selected
-        const currentSettings = this.settingsSubject.value;
-        if (!currentSettings.selectedProvider) {
-          this.updateSettings({ selectedProvider: response.default_provider });
+        if (response.default_provider) {
+          this.defaultProviderSubject.next(response.default_provider);
+          
+          // Set the default provider as the selected provider if none is selected
+          const currentSettings = this.settingsSubject.value;
+          if (!currentSettings.selectedProvider) {
+            this.updateSettings({ selectedProvider: response.default_provider });
+          }
+        } else {
+          console.warn('No default provider specified');
         }
       },
       error: (error) => {
         console.error('Failed to load provider information', error);
+        // Set empty providers on error to avoid UI issues
+        this.providersSubject.next([]);
       }
     });
   }

@@ -26,6 +26,15 @@
     text-overflow: ellipsis;
     white-space: nowrap;
   }
+  
+  .edit-button {
+    opacity: 0.3;
+    transition: opacity 0.2s ease-in-out;
+    margin-left: 0.5rem;
+    &:hover {
+      opacity: 1;
+    }
+  }
 }
 
 .conversation-title-edit {

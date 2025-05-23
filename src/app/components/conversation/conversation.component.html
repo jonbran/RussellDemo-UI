@@ -7,7 +7,7 @@
     <!-- Title display with edit button -->
     <div class="conversation-title-container d-flex align-items-center" *ngIf="!isEditingTitle">
       <h2>{{ conversation?.title || 'Untitled Conversation' }}</h2>
-      <button class="btn btn-sm btn-outline-secondary ms-2" (click)="startEditingTitle()" title="Edit conversation title">
+      <button class="btn btn-sm btn-link edit-button" (click)="startEditingTitle()" title="Edit conversation title">
         <i class="fas fa-edit"></i>
       </button>
     </div>
@@ -21,7 +21,9 @@
           formControlName="title" 
           placeholder="Enter conversation title"
           #titleInput
-          [disabled]="savingTitle">
+          [disabled]="savingTitle"
+          (keydown.escape)="cancelEditingTitle()"
+          (keydown.enter)="saveTitle()">
         <button 
           type="submit" 
           class="btn btn-sm btn-primary ms-2" 

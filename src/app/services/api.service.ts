@@ -81,6 +81,6 @@ export class ApiService {
 
   // Get available providers and default provider
   getProviders(): Observable<ProviderResponse> {
-    return this.get<ProviderResponse>('/models');
+    return this.get<ProviderResponse>('/api/models');
   }
 }
