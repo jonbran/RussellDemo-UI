@@ -1,0 +1,12 @@
+<div class="message" [ngClass]="{'message-user': isUser, 'message-assistant': !isUser}">
+  <div class="message-content">
+    <div class="message-header">
+      <span class="message-role">{{ isUser ? 'You' : 'Assistant' }}</span>
+      <span class="message-timestamp">{{ formattedTimestamp }}</span>
+    </div>
+    
+    <div class="message-body">
+      <markdown [data]="message.content"></markdown>
+    </div>
+  </div>
+</div>

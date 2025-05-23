@@ -1,0 +1,27 @@
+<nav class="navbar navbar-expand-lg">
+  <div class="container-fluid">
+    <a class="navbar-brand" routerLink="/conversations">MCP Host</a>
+    
+    <button class="navbar-toggler" type="button" (click)="isMenuCollapsed = !isMenuCollapsed">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    
+    <div class="collapse navbar-collapse" [class.show]="!isMenuCollapsed">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/conversations" routerLinkActive="active">Conversations</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/settings" routerLinkActive="active">Settings</a>
+        </li>
+      </ul>
+      
+      <div class="d-flex" *ngIf="user">
+        <span class="navbar-text me-3">
+          Welcome, {{ user.username }}
+        </span>
+        <button class="btn btn-outline-danger" (click)="logout()">Logout</button>
+      </div>
+    </div>
+  </div>
+</nav>

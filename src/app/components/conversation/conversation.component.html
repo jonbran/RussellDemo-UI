@@ -1,0 +1,89 @@
+<div class="conversation-container">
+  <div class="conversation-header">
+    <button class="btn btn-sm btn-outline-secondary" routerLink="/conversations">
+      <i class="fas fa-arrow-left"></i> Back to Conversations
+    </button>
+    
+    <!-- Title display with edit button -->
+    <div class="conversation-title-container d-flex align-items-center" *ngIf="!isEditingTitle">
+      <h2>{{ conversation?.title || 'Untitled Conversation' }}</h2>
+      <button class="btn btn-sm btn-outline-secondary ms-2" (click)="startEditingTitle()" title="Edit conversation title">
+        <i class="fas fa-edit"></i>
+      </button>
+    </div>
+    
+    <!-- Title edit form -->
+    <div class="conversation-title-edit" *ngIf="isEditingTitle">
+      <form [formGroup]="titleForm" (ngSubmit)="saveTitle()" class="d-flex">
+        <input 
+          type="text" 
+          class="form-control" 
+          formControlName="title" 
+          placeholder="Enter conversation title"
+          #titleInput
+          [disabled]="savingTitle">
+        <button 
+          type="submit" 
+          class="btn btn-sm btn-primary ms-2" 
+          [disabled]="titleForm.invalid || savingTitle">
+          <i class="fas fa-save"></i>
+        </button>
+        <button 
+          type="button" 
+          class="btn btn-sm btn-outline-secondary ms-1" 
+          (click)="cancelEditingTitle()"
+          [disabled]="savingTitle">
+          <i class="fas fa-times"></i>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <div class="messages-container" #messagesContainer>
+    <div *ngIf="loading" class="text-center p-4">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+      <p class="mt-2">Loading conversation...</p>
+    </div>
+    
+    <div *ngIf="!loading && conversation?.messages?.length === 0" class="text-center p-4">
+      <p>No messages in this conversation yet. Start by sending a message below.</p>
+    </div>
+    
+    <div *ngIf="!loading && conversation?.messages">
+      <app-message *ngFor="let message of conversation?.messages" [message]="message"></app-message>
+    </div>
+    
+    <div *ngIf="isTyping" class="typing-indicator">
+      <div class="typing-dot"></div>
+      <div class="typing-dot"></div>
+      <div class="typing-dot"></div>
+    </div>
+  </div>
+
+  <div class="message-form-container">
+    <form [formGroup]="messageForm" (ngSubmit)="sendMessage()">
+      <div class="input-group">
+        <textarea 
+          class="form-control" 
+          formControlName="message" 
+          placeholder="Type your message..."
+          [disabled]="sending"
+          rows="2"
+          (keydown.enter)="handleEnterKey($event)"></textarea>
+        <button 
+          class="btn btn-primary" 
+          type="submit" 
+          [disabled]="messageForm.invalid || sending">
+          <i class="fas fa-paper-plane"></i>
+        </button>
+      </div>
+      <small class="form-text text-muted">Press Enter to send. Shift+Enter for new line.</small>
+    </form>
+    
+    <div *ngIf="error" class="alert alert-danger mt-3">
+      {{ error }}
+    </div>
+  </div>
+</div>

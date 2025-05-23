@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>MCP Host UI</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <!-- Add Font Awesome CDN for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  <app-root>
+    <!-- Loading indicator while Angular initializes -->
+    <div style="display: flex; justify-content: center; align-items: center; height: 100vh; flex-direction: column;">
+      <div style="border: 4px solid #f3f3f3; border-top: 4px solid #3498db; border-radius: 50%; width: 50px; height: 50px; animation: spin 2s linear infinite;"></div>
+      <p style="margin-top: 20px;">Loading MCP Host UI...</p>
+    </div>
+    <style>
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+    </style>
+  </app-root>
+  <!-- Error reporting for diagnostics -->
+  <script>
+    window.onerror = function(message, source, lineno, colno, error) {
+      console.error('Global error caught:', message, 'at', source, ':', lineno, ':', colno);
+      console.error('Error object:', error);
+      
+      // Create a visible error display
+      var errorDiv = document.createElement('div');
+      errorDiv.style.backgroundColor = '#ffdddd';
+      errorDiv.style.color = '#cc0000';
+      errorDiv.style.padding = '20px';
+      errorDiv.style.margin = '20px';
+      errorDiv.style.border = '1px solid #cc0000';
+      errorDiv.style.borderRadius = '5px';
+      errorDiv.style.fontFamily = 'monospace';
+      errorDiv.style.whiteSpace = 'pre-wrap';
+      errorDiv.style.position = 'fixed';
+      errorDiv.style.top = '10px';
+      errorDiv.style.left = '10px';
+      errorDiv.style.right = '10px';
+      errorDiv.style.zIndex = '9999';
+      
+      errorDiv.innerHTML = '<h3>JavaScript Error Detected</h3>' +
+                          '<p><strong>Message:</strong> ' + message + '</p>' +
+                          '<p><strong>Source:</strong> ' + source + '</p>' +
+                          '<p><strong>Line:</strong> ' + lineno + ', <strong>Column:</strong> ' + colno + '</p>' +
+                          '<p><strong>Error object:</strong> ' + (error ? error.stack : 'No error object') + '</p>';
+      
+      document.body.appendChild(errorDiv);
+      return false;
+    };
+  </script>
+</body>
+</html>

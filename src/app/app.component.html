@@ -1,0 +1,36 @@
+<div class="app-container">
+  <!-- Header -->
+  <app-header></app-header>
+
+  <!-- Main Content -->
+  <div class="content-container">
+    <!-- API Health Status Alert -->
+    <div *ngIf="!isHealthy && !checking" class="alert alert-danger mb-3" role="alert">
+      <div class="d-flex align-items-center">
+        <i class="fa-solid fa-triangle-exclamation me-2"></i>
+        <div>
+          <strong>API Connection Error:</strong> Unable to connect to the MCP Host API.
+          <button class="btn btn-sm btn-outline-danger ms-3" (click)="checkApiHealth()">
+            <i class="fa-solid fa-rotate me-1"></i> Retry
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Loading Indicator -->
+    <div *ngIf="checking" class="alert alert-info mb-3" role="alert">
+      <div class="d-flex align-items-center">
+        <div class="spinner-border spinner-border-sm me-2" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+        <div>Checking connection to MCP Host API...</div>
+      </div>
+    </div>
+
+    <!-- Router Outlet for Page Content -->
+    <router-outlet></router-outlet>
+  </div>
+
+  <!-- Footer -->
+  <app-footer></app-footer>
+</div>

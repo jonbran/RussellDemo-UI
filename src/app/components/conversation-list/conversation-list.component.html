@@ -1,0 +1,94 @@
+<div class="container mt-4">
+  <div class="row mb-4">
+    <div class="col">
+      <div class="d-flex justify-content-between align-items-center">
+        <h1>Your Conversations</h1>
+      </div>
+    </div>
+  </div>
+  
+  <!-- New Conversation Form -->
+  <div class="row mb-4">
+    <div class="col">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Start a New Conversation</h5>
+          <div class="input-group">
+            <input 
+              type="text" 
+              class="form-control" 
+              [(ngModel)]="newConversationMessage" 
+              placeholder="Type an initial message (optional)" 
+              [disabled]="creatingConversation"
+            >
+            <button 
+              class="btn btn-primary" 
+              (click)="createNewConversation()" 
+              [disabled]="creatingConversation"
+            >
+              <span *ngIf="creatingConversation" class="spinner-border spinner-border-sm me-1"></span>
+              Create
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Loading -->
+  <div *ngIf="loading && conversations.length === 0" class="text-center p-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <p class="mt-2">Loading conversations...</p>
+  </div>
+  
+  <!-- Error message -->
+  <div *ngIf="error" class="alert alert-danger">
+    {{ error }}
+  </div>
+  
+  <!-- No conversations -->
+  <div *ngIf="!loading && conversations.length === 0" class="text-center p-5">
+    <p class="lead">You don't have any conversations yet.</p>
+    <p>Start a new conversation using the form above.</p>
+  </div>
+  
+  <!-- Conversation List -->
+  <div *ngIf="conversations.length > 0" class="row">
+    <div class="col">
+      <div class="list-group">
+        <div *ngFor="let conversation of conversations" 
+             class="list-group-item list-group-item-action conversation-item"
+             [routerLink]="['/conversations', conversation.id]">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <div class="fw-bold">{{ conversation.title || 'Untitled Conversation' }}</div>
+              <div class="text-muted small">
+                {{ formatDate(conversation.created_at) }} • {{ conversation.message_count }} messages
+              </div>
+            </div>
+            <button 
+              class="btn btn-sm btn-outline-danger"
+              (click)="deleteConversation($event, conversation.id)"
+            >
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Load More Button -->
+      <div *ngIf="hasMore" class="text-center mt-3 mb-5">
+        <button 
+          class="btn btn-outline-primary" 
+          (click)="loadMore()" 
+          [disabled]="loading"
+        >
+          <span *ngIf="loading" class="spinner-border spinner-border-sm me-1"></span>
+          Load More
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
